@@ -26,13 +26,15 @@ void setup() {
   setup_io();
   Serial.begin(9600);
   setup_servo();
-  setup_wifi();
+  //setup_wifi();
+  setup_ble();
 }
 
   
 void loop() {
 
   // check switch
+  /*
   const int SW_TIME = 50;
   for (int i = 0; i < SW_SIZE; ++i) {
     inputValue = digitalRead(swIds[i]);
@@ -53,10 +55,11 @@ void loop() {
         case 7: moveEyelidDiff(0.0, -10.0, SW_TIME); break;
       }
     }
-  }
+  }*/
 
   // check wifi
-  loop_wifi();
+  // loop_wifi();
+  loop_ble();
 
   //digitalWrite(LED1, LOW);
 }
