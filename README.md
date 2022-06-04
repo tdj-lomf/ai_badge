@@ -27,6 +27,33 @@
 1. PCではなく、モバイルバッテリーとArduinoをmicro-usbケーブルで接続し給電する
 2. 上記と同様に10秒ほど待ち、同じIPアドレスに接続して動作確認する
 
+## コーディング
+
+### モータ動作
+- MoveComand.inoに動作パターン（コマンド）を追加していく。
+    - 瞳の動きならeyeCommand, まぶたの動きならeyelidCommandに追加する。
+    - 瞳とまぶたが同時に動く必要がある場合は未作成なので、どちらかに追加するか、第三の関数を追加するかしないといけない。
+- モータを動かす関数群は、EyeMove.inoに書く。
+    - moveEye, moveEyelid: モータを動かす最も基本的な関数。可能な限り早く指定位置に動かす。
+    - moveEyeP, moveEyelidP: 上記のパーセント指定バージョン。
+    - moveEyeSync, moveEyelidSync: 動作時間を指定できるバージョン。その時間まで他の処理ができなくなる点に注意。
+    - moveEyeDiff, moveEyelidDiff: Syncの相対位置バージョン。現在位置からどれだけ動かすかをパーセントで指定する。
+
+### LED
+LEDのON/OFFは下記のように行う。
+```c++
+  digitalWrite(LED1, HIGH);  // ON
+  digitalWrite(LED1, LOW);  // OFF
+```
+
+ラベルと実物の対応  
+
+| ラベル | 実物 |
+| ---- | ---- |
+| LED1 | Arduinoに近い側に接続したLED |
+| LED2 | Arduinoに遠い側に接続したLED |
+| LED3 | Arduino上の橙色のLED |
+    
 ## トラブルシューティング
 - Webブラウザとの通信が切れた
   - 回路上のリセットボタンを押し、再び接続されるまで待つ
