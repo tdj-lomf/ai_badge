@@ -5,12 +5,25 @@ Servo servo[4];
 EyeLink eyeLink;
 
 // define min and max values
+// 1
+/*
 const double exMax = 3.0;
 const double eyMax = 3.0;
 const double uOpen = 3.0;
 const double uClose = -4.0;
 const double lOpen = -3.5;
 const double lClose = 3.0;
+*/
+
+// 2
+const double exMax = 3.0;
+const double eyMax = 2.5;
+const double exOffset = 1.0;
+const double eyOffset = -1.0;
+const double uOpen = 1.5;
+const double uClose = -4.0;
+const double lOpen = -0.0;
+const double lClose = 1.0;
 
 double uState = 0.0;  // upper eyelid position state[%]
 double lState = 0.0;  // lower eyelid position state[%]
@@ -30,7 +43,7 @@ void setup_servo() {
 
 void moveEye(double ex, double ey) {
   double diffX, diffY;
-  eyeLink.inverseKinema30(ex, ey, diffX, diffY);
+  eyeLink.inverseKinema30(ex + exOffset, ey + eyOffset, diffX, diffY);
   const double angleX = 90.0 + diffX * 30 / 1.2;  // [mm] -> [deg]  
   const double angleY = 90.0 - diffY * 30 / 1.2;  // [mm] -> [deg]
   if (angleX < 0.0 || 180 < angleX) {
@@ -123,27 +136,31 @@ void moveEyelidSync(double u_per, double l_per, int time_ms) {
 void moveEyeDiff(double diffx_per, double diffy_per, int time_ms) {
   const double xTarget = exState + diffx_per;
   const double yTarget = eyState + diffy_per;
-  if (xTarget < -100.0 || 100.0 < xTarget) {
+  if (xTarget < -100.1 || 100.1 < xTarget) {
     Serial.println("xTarget out of range");
     return;
   }
-  if (yTarget < -100.0 || 100.0 < yTarget) {
+  if (yTarget < -100.1 || 100.1 < yTarget) {
     Serial.println("yTarget out of range");
     return;
   }
+  Serial.println(xTarget);
+  Serial.println(yTarget);
   moveEyeSync(xTarget, yTarget, time_ms);
 }
 
 void moveEyelidDiff(double diffu_per, double diffl_per, int time_ms) {
   const double uTarget = uState + diffu_per;
   const double lTarget = lState + diffl_per;
-  if (uTarget < 0.0 || 100.0 < uTarget) {
+  if (uTarget < -0.0 || 100.0 < uTarget) {
     Serial.println("uTarget out of range");
     return;
   }
-  if (lTarget < 0.0 || 100.0 < lTarget) {
+  if (lTarget < -0.0 || 100.0 < lTarget) {
     Serial.println("lTarget out of range");
     return;
   }
+  Serial.println(uTarget);
+  Serial.println(lTarget);
   moveEyelidSync(uTarget, lTarget, time_ms);
 }

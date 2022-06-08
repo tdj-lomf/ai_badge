@@ -4,13 +4,12 @@ BLEService newService("180A"); // creating the service
 
 BLEUnsignedCharCharacteristic randomReading("2A58", BLERead | BLENotify); // creating the Analog Value characteristic
 BLEByteCharacteristic switchChar("2A57", BLERead | BLEWrite); // creating the LED characteristic
+BLEByteCharacteristic eyeChar("2c36f468-2e63-40d7-8433-9942d2cbd241", BLERead | BLEWrite);
+BLEByteCharacteristic eyelidChar("af13d297-a502-419a-be4e-a3cd3552bcac", BLERead | BLEWrite);
 
 long previousMillis = 0;
 
 void setup_ble() {
-  //Serial.begin(9600);    // initialize serial communication
-  while (!Serial);       //starts the program if we open the serial monitor.
-
   //initialize ArduinoBLE library
   if (!BLE.begin()) {
     Serial.println("starting Bluetooth® Low Energy failed!");
@@ -21,11 +20,15 @@ void setup_ble() {
   BLE.setAdvertisedService(newService);
 
   newService.addCharacteristic(switchChar); //add characteristics to a service
+  newService.addCharacteristic(eyeChar);
+  newService.addCharacteristic(eyelidChar);
   newService.addCharacteristic(randomReading);
 
   BLE.addService(newService);  // adding the service
 
   switchChar.writeValue(0); //set initial value for characteristics
+  eyeChar.writeValue(0);
+  eyelidChar.writeValue(0);
   randomReading.writeValue(0);
 
   BLE.advertise(); //start advertising the service
@@ -63,6 +66,19 @@ void loop_ble() {
           }
         }
 
+        if (eyeChar.written()) {
+          int value = eyeChar.value();
+          Serial.print("eye command ");
+          Serial.println(value);
+          eyeCommand(value);
+        }
+
+        if (eyelidChar.written()) {
+          int value = eyelidChar.value();
+          Serial.print("eyelid command ");
+          Serial.println(value);
+          eyelidCommand(value);
+        }
       }
     }
 
