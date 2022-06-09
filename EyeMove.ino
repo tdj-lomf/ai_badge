@@ -6,16 +6,18 @@ EyeLink eyeLink;
 
 // define min and max values
 // 1
-/*
 const double exMax = 3.0;
 const double eyMax = 3.0;
+const double exOffset = 0.0;
+const double eyOffset = 0.0;
 const double uOpen = 3.0;
 const double uClose = -4.0;
 const double lOpen = -3.5;
 const double lClose = 3.0;
-*/
+
 
 // 2
+/*
 const double exMax = 3.0;
 const double eyMax = 2.5;
 const double exOffset = 1.0;
@@ -24,6 +26,7 @@ const double uOpen = 1.5;
 const double uClose = -4.0;
 const double lOpen = -0.0;
 const double lClose = 1.0;
+*/
 
 double uState = 0.0;  // upper eyelid position state[%]
 double lState = 0.0;  // lower eyelid position state[%]
