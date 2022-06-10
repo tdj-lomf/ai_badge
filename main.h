@@ -11,6 +11,7 @@
 #define SW7 3
 #define SW8 2
 
+#define M_POWER 15
 
 #define LED1 5
 #define LED2 4

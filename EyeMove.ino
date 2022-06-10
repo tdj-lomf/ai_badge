@@ -1,5 +1,6 @@
 #include <Servo.h>
 #include "EyeLink.h"
+#include "main.h"
 
 Servo servo[4];
 EyeLink eyeLink;
@@ -14,7 +15,6 @@ const double uOpen = 3.0;
 const double uClose = -4.0;
 const double lOpen = -3.5;
 const double lClose = 3.0;
-
 
 // 2
 /*
@@ -39,9 +39,21 @@ void setup_servo() {
   servo[1].attach(10);  // eye x
   servo[2].attach(7);   // eye y
   servo[3].attach(8);   // eyelid upper
+
+  pinMode(M_POWER, OUTPUT);  // motor power supply (High: On)
+  setMotorPower(false);
+
   // move to initial position
   moveEye(0.0, 0.0);
   moveEyelid(uOpen, lOpen);
+}
+
+void setMotorPower(bool on) {
+  if (on) {
+    digitalWrite(M_POWER, HIGH);
+  } else {
+    digitalWrite(M_POWER, LOW);    
+  }
 }
 
 void moveEye(double ex, double ey) {
@@ -102,6 +114,7 @@ void moveEyeSync(double ex_per, double ey_per, int time_ms) {
 
   const double xStep = (ex_per - exState) / loopMax;
   const double yStep = (ey_per - eyState) / loopMax;
+  setMotorPower(true);
   for (int i = 0; i < loopMax; ++i) {
     exState += xStep;
     eyState += yStep;
@@ -112,6 +125,7 @@ void moveEyeSync(double ex_per, double ey_per, int time_ms) {
       delay(TIME_STEP);
     }
   }    
+  setMotorPower(false);
 }
 
 void moveEyelidSync(double u_per, double l_per, int time_ms) {
@@ -124,6 +138,7 @@ void moveEyelidSync(double u_per, double l_per, int time_ms) {
 
   const double uStep = (u_per - uState) / loopMax;
   const double lStep = (l_per - lState) / loopMax;
+  setMotorPower(true);
   for (int i = 0; i < loopMax; ++i) {
     uState += uStep;
     lState += lStep;
@@ -134,6 +149,7 @@ void moveEyelidSync(double u_per, double l_per, int time_ms) {
       delay(TIME_STEP);
     }
   }    
+  setMotorPower(false);
 }
 
 void moveEyeDiff(double diffx_per, double diffy_per, int time_ms) {
