@@ -7,6 +7,7 @@ EyeLink eyeLink;
 
 // define min and max values
 // 1
+/*
 const double exMax = 3.0;
 const double eyMax = 3.0;
 const double exOffset = 0.0;
@@ -15,18 +16,17 @@ const double uOpen = 3.0;
 const double uClose = -4.0;
 const double lOpen = -3.5;
 const double lClose = 3.0;
+*/
 
 // 2
-/*
 const double exMax = 3.0;
-const double eyMax = 2.5;
+const double eyMax = 2.0;
 const double exOffset = 1.0;
-const double eyOffset = -1.0;
-const double uOpen = 1.5;
-const double uClose = -4.0;
-const double lOpen = -0.0;
-const double lClose = 1.0;
-*/
+const double eyOffset = 0.0;
+const double uOpen = 2.0;
+const double uClose = -3.5;
+const double lOpen = -3.0;
+const double lClose = 3.5;
 
 double uState = 0.0;  // upper eyelid position state[%]
 double lState = 0.0;  // lower eyelid position state[%]
@@ -41,11 +41,13 @@ void setup_servo() {
   servo[3].attach(8);   // eyelid upper
 
   pinMode(M_POWER, OUTPUT);  // motor power supply (High: On)
-  setMotorPower(false);
 
   // move to initial position
+  setMotorPower(true);
   moveEye(0.0, 0.0);
   moveEyelid(uOpen, lOpen);
+  delay(500);  
+  setMotorPower(false);
 }
 
 void setMotorPower(bool on) {
@@ -76,12 +78,14 @@ void moveEye(double ex, double ey) {
 void moveEyelid(double u_mm, double l_mm) {
   const double angleU = 90.0 + u_mm * 30 / 1.2;  // [mm] -> [deg]
   const double angleL = 90.0 - l_mm * 30 / 1.2;  // [mm] -> [deg]
-  if (angleU < -30.0 || 180.0 < angleU) {
+  if (angleU < 0.0 || 180.0 < angleU) {
     Serial.println("angleU out of range");
+    Serial.println(angleU);
     return;    
   }  
   if (angleL < 0.0 || 180.0 < angleL) {
     Serial.println("angleL out of range");
+    Serial.println(angleL);
     return;    
   }
   servo[3].write(angleU);
@@ -124,7 +128,8 @@ void moveEyeSync(double ex_per, double ey_per, int time_ms) {
     } else {
       delay(TIME_STEP);
     }
-  }    
+  }
+  delay(100);
   setMotorPower(false);
 }
 
@@ -149,19 +154,22 @@ void moveEyelidSync(double u_per, double l_per, int time_ms) {
       delay(TIME_STEP);
     }
   }    
+  delay(100);
   setMotorPower(false);
 }
 
 void moveEyeDiff(double diffx_per, double diffy_per, int time_ms) {
-  const double xTarget = exState + diffx_per;
-  const double yTarget = eyState + diffy_per;
-  if (xTarget < -100.1 || 100.1 < xTarget) {
-    Serial.println("xTarget out of range");
-    return;
+  double xTarget = exState + diffx_per;
+  double yTarget = eyState + diffy_per;
+  if (xTarget < -100.0) {
+    xTarget = -100.0;
+  } else if (xTarget > 100.0) {
+    xTarget = 100.0;
   }
-  if (yTarget < -100.1 || 100.1 < yTarget) {
-    Serial.println("yTarget out of range");
-    return;
+  if (yTarget < -100.0) {
+    yTarget = -100.0;
+  } else if (yTarget > 100.0) {
+    yTarget = 100.0;
   }
   Serial.println(xTarget);
   Serial.println(yTarget);
@@ -169,15 +177,17 @@ void moveEyeDiff(double diffx_per, double diffy_per, int time_ms) {
 }
 
 void moveEyelidDiff(double diffu_per, double diffl_per, int time_ms) {
-  const double uTarget = uState + diffu_per;
-  const double lTarget = lState + diffl_per;
-  if (uTarget < -0.0 || 100.0 < uTarget) {
-    Serial.println("uTarget out of range");
-    return;
+  double uTarget = uState + diffu_per;
+  double lTarget = lState + diffl_per;
+  if (uTarget < 0.0) {
+    uTarget = 0.0;
+  } else if (uTarget > 100.0) {
+    uTarget = 100.0;
   }
-  if (lTarget < -0.0 || 100.0 < lTarget) {
-    Serial.println("lTarget out of range");
-    return;
+  if (lTarget < 0.0) {
+    lTarget = 0.0;
+  } else if (lTarget > 100.0) {
+    lTarget = 100.0;
   }
   Serial.println(uTarget);
   Serial.println(lTarget);

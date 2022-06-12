@@ -36,7 +36,7 @@ void setup() {
 void loop() {
 
   // check switch
-  const int SW_TIME = 50;
+  const int SW_TIME = 150;
   for (int i = 0; i < SW_SIZE; ++i) {
     inputValue = digitalRead(swIds[i]);
     if (inputValue == LOW) {
