@@ -74,7 +74,7 @@ void loop_ble() {
           Serial.println(xRate);
           Serial.print("eyeY ");
           Serial.println(yRate);
-          moveEyeSync((double)xRate, (double)yRate, 250);
+          moveEyeSync((double)xRate, (double)yRate, 50);
         }
 
         if (eyelidChar.written()) {
