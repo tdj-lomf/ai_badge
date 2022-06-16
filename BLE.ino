@@ -67,10 +67,14 @@ void loop_ble() {
         }
 
         if (eyeChar.written()) {
-          int value = eyeChar.value();
-          Serial.print("eye command ");
-          Serial.println(value);
-          eyeCommand(value);
+          const int value = eyeChar.value();
+          const int xRate = (int(value >> 4) - 7) * 14;  // [0, 14] -> [-96%, 96%]
+          const int yRate = (int(value & 0x0F) - 7) * 14;  // [0, 14] -> [-96%, 96%]
+          Serial.print("eyeX ");
+          Serial.println(xRate);
+          Serial.print("eyeY ");
+          Serial.println(yRate);
+          moveEyeSync((double)xRate, (double)yRate, 250);
         }
 
         if (eyelidChar.written()) {
