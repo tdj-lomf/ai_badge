@@ -47,10 +47,16 @@ void loop_ble() {
 
     //digitalWrite(LED3, HIGH); // turn on the LED to indicate the connection
 
+    long motorOnMillis = millis();
+
     while (central.connected()) { // while the central is connected:
       long currentMillis = millis();
 
-      if (currentMillis - previousMillis >= 200) {
+      if (currentMillis - motorOnMillis >= 2000) {
+        setMotorPower(false);        
+      }
+
+      if (currentMillis - previousMillis >= 1) {
         previousMillis = currentMillis;
 
         int randomValue = analogRead(A1);
@@ -74,7 +80,9 @@ void loop_ble() {
           Serial.println(xRate);
           Serial.print("eyeY ");
           Serial.println(yRate);
-          moveEyeSync((double)xRate, (double)yRate, 50);
+          setMotorPower(true);
+          motorOnMillis = millis();
+          moveEyeP((double)xRate, (double)yRate);
         }
 
         if (eyelidChar.written()) {
