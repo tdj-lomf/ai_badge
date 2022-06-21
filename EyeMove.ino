@@ -17,7 +17,6 @@ const double uClose = -4.0;
 const double lOpen = -3.5;
 const double lClose = 3.0;
 */
-
 // 2
 const double exMax = 3.0;
 const double eyMax = 2.0;
@@ -26,7 +25,7 @@ const double eyOffset = 0.0;
 const double uOpen = 2.0;
 const double uClose = -3.5;
 const double lOpen = -3.0;
-const double lClose = 3.5;
+const double lClose = 3.7;
 
 double uState = 0.0;  // upper eyelid position state[%]
 double lState = 0.0;  // lower eyelid position state[%]
