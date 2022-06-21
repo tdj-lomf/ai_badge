@@ -51,9 +51,22 @@ void loop_ble() {
 
     while (central.connected()) { // while the central is connected:
       long currentMillis = millis();
+      long duration = currentMillis - motorOnMillis;
+      if (duration >= 2000) {
+        setMotorPower(false);
+      }
 
-      if (currentMillis - motorOnMillis >= 2000) {
-        setMotorPower(false);        
+      if (duration >= 8000) {
+        if (duration >= 15000) {
+          eyelidCommand(1); // 15秒に1回以上は瞬きする
+          motorOnMillis = millis();
+        }
+        else if (duration % 1000 == 0) {  // 1秒おきに判定
+          if (random(500) < 10) {  // 2%? 想定より頻度が高くなっている気がする
+            eyelidCommand(1); // たまに瞬きする
+            motorOnMillis = millis();
+          }
+        }
       }
 
       if (currentMillis - previousMillis >= 1) {
@@ -90,6 +103,7 @@ void loop_ble() {
           Serial.print("eyelid command ");
           Serial.println(value);
           eyelidCommand(value);
+          motorOnMillis = millis();
         }
       }
     }
