@@ -57,13 +57,15 @@ void loop_ble() {
       }
 
       if (duration >= 8000) {
+        double ex = random(100) - 50;
+        double ey = random(100) - 50;
         if (duration >= 15000) {
-          eyelidCommand(1); // 15秒に1回以上は瞬きする
+          moveEyeSync(ex, ey, 250); // 15秒に1回以上は瞳をやや動かす
           motorOnMillis = millis();
         }
         else if (duration % 1000 == 0) {  // 1秒おきに判定
           if (random(500) < 10) {  // 2%? 想定より頻度が高くなっている気がする
-            eyelidCommand(1); // たまに瞬きする
+            moveEyeSync(ex, ey, 250); // たまに瞬きする
             motorOnMillis = millis();
           }
         }
@@ -80,7 +82,7 @@ void loop_ble() {
             Serial.println("LED on");
             digitalWrite(LED3, HIGH);         // will turn the LED on
           } else {                              // a 0 value
-            Serial.println(F("LED off"));
+            Serial.println(("LED off"));
             digitalWrite(LED3, LOW);          // will turn the LED off
           }
         }
