@@ -15,8 +15,9 @@ const double eyOffset = 0.0;
 const double uOpen = 3.0;
 const double uClose = -4.0;
 const double lOpen = -3.5;
-const double lClose = 3.0;
+const double lClose = 2.4;
 */
+
 // 2
 const double exMax = 3.0;
 const double eyMax = 2.0;
@@ -55,6 +56,14 @@ void setMotorPower(bool on) {
   } else {
     digitalWrite(M_POWER, LOW);    
   }
+}
+
+double getUState() {
+  return uState;
+}
+
+double getLState() {
+  return lState;
 }
 
 void moveEye(double ex, double ey) {

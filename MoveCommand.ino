@@ -12,6 +12,7 @@ void eyeCommand(int id) {
 
 void eyelidCommand(int id) {
   const int TIME_M = 300;
+  double tmpU, tmpL;
   switch (id) {
     case 0:  // 全開
       digitalWrite(LED1, HIGH);
@@ -19,10 +20,12 @@ void eyelidCommand(int id) {
       moveEyelidSync(0.0, 0.0, TIME_M);
       break;
     case 1: // 瞬き1回
+      tmpU = getUState();
+      tmpL = getLState();
       moveEyelidSync(100.0, 100.0, TIME_M);
       digitalWrite(LED1, HIGH);
       digitalWrite(LED2, HIGH);
-      moveEyelidSync(0.0, 0.0, TIME_M);
+      moveEyelidSync(tmpU, tmpL, TIME_M); // 元の位置に戻る
       break;
     case 2: moveEyelidSync(50.0, 0.0, TIME_M); break; // ジト目Lv1
     case 3: moveEyelidSync(50.0, 50.0, TIME_M); break; // ジト目Lv2
