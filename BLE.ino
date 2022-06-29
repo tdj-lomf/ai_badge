@@ -89,8 +89,17 @@ void loop_ble() {
 
         if (eyeChar.written()) {
           const int value = eyeChar.value();
-          const int xRate = (int(value >> 4) - 7) * 14;  // [0, 14] -> [-96%, 96%]
-          const int yRate = (int(value & 0x0F) - 7) * 14;  // [0, 14] -> [-96%, 96%]
+          int xValue = int(value >> 4);  // [0, 14]
+          int yValue = int(value & 0x0F);  // [0, 14]
+          const double currentX = getEXState();
+          const double currentY = getEYState();
+          if (currentY <= currentX && currentY >= -currentX) { // 右方向から移動する場合
+            if (7 <= xValue && xValue <= 8 && 6 <= yValue && yValue <= 8) {  // 中心縦3マス+その右が行先のとき、左に修正
+              xValue -= 1;              
+            }
+          }
+          const int xRate = (xValue - 7) * 14;  // [0, 14] -> [-96%, 96%]
+          const int yRate = (yValue - 7) * 14;  // [0, 14] -> [-96%, 96%]
           Serial.print("eyeX ");
           Serial.println(xRate);
           Serial.print("eyeY ");

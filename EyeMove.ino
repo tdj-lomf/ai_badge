@@ -66,6 +66,14 @@ double getLState() {
   return lState;
 }
 
+double getEXState() {
+  return exState;
+}
+
+double getEYState() {
+  return eyState;
+}
+
 void moveEye(double ex, double ey) {
   double diffX, diffY;
   eyeLink.inverseKinema30(ex + exOffset, ey + eyOffset, diffX, diffY);
