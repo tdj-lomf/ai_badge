@@ -103,6 +103,8 @@ void moveEyelid(double u_mm, double l_mm) {
 // ex_per: [-100.0, 100.0]
 // ey_per: [-100.0, 100.0]
 void moveEyeP(double ex_per, double ey_per) {
+  exState = ex_per;
+  eyState = ey_per;
   const double ex = exMax * ex_per / 100.0;
   const double ey = eyMax * ey_per / 100.0;
   moveEye(ex, ey);
@@ -111,6 +113,8 @@ void moveEyeP(double ex_per, double ey_per) {
 // u_per: [0.0, 100.0]
 // l_per: [0.0, 100.0]
 void moveEyelidP(double u_per, double l_per) {
+  uState = u_per;
+  lState = l_per;
   const double u_mm = u_per * (uClose - uOpen) / 100.0 + uOpen;
   const double l_mm = l_per * (lClose - lOpen) / 100.0 + lOpen;
   moveEyelid(u_mm, l_mm);
