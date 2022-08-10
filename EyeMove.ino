@@ -38,7 +38,7 @@ const double eyMax = 2.0;
 const double exOffset = 1.0;
 const double eyOffset = 0.0;
 const double uOpen = 3.0;
-const double uClose = -2.0;
+const double uClose = -1.5;
 const double lOpen = -2.5;
 const double lClose = 2.5;
 #endif
