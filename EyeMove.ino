@@ -39,8 +39,8 @@ const double exOffset = 1.0;
 const double eyOffset = 0.0;
 const double uOpen = 3.0;
 const double uClose = -1.5;
-const double lOpen = -2.5;
-const double lClose = 2.5;
+const double lOpen = -3.5;
+const double lClose = 1.5;
 #endif
 
 double uState = 0.0;  // upper eyelid position state[%]
