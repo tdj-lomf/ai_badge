@@ -5,9 +5,10 @@
 Servo servo[4];
 EyeLink eyeLink;
 
+#define ID_3
 // define min and max values
 // 1
-/*
+#ifdef ID_1
 const double exMax = 3.0;
 const double eyMax = 3.0;
 const double exOffset = 0.0;
@@ -16,9 +17,10 @@ const double uOpen = 3.5;
 const double uClose = -4.0;
 const double lOpen = -3.5;
 const double lClose = 2.4;
-*/
+#endif
 
 // 2
+#ifdef ID_2
 const double exMax = 3.0;
 const double eyMax = 2.0;
 const double exOffset = 1.0;
@@ -27,6 +29,19 @@ const double uOpen = 2.0;
 const double uClose = -3.5;
 const double lOpen = -3.5;
 const double lClose = 3.3;
+#endif
+
+// 3
+#ifdef ID_3
+const double exMax = 3.0;
+const double eyMax = 2.0;
+const double exOffset = 1.0;
+const double eyOffset = 0.0;
+const double uOpen = 3.0;
+const double uClose = -2.0;
+const double lOpen = -2.5;
+const double lClose = 2.5;
+#endif
 
 double uState = 0.0;  // upper eyelid position state[%]
 double lState = 0.0;  // lower eyelid position state[%]
