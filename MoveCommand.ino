@@ -11,7 +11,8 @@ void eyeCommand(int id) {
 }
 
 void eyelidCommand(int id) {
-  const int TIME_M = 300;
+  const int TIME_M = 300;  // [ms]
+  const int TIME_SLOW = 2000;  // [ms]
   double tmpU, tmpL;
   switch (id) {
     case 0:  // 全開
@@ -34,6 +35,11 @@ void eyelidCommand(int id) {
       moveEyelidSync(100.0, 100.0, TIME_M);
       digitalWrite(LED1, LOW);
       digitalWrite(LED2, LOW);
+      break;
+    case 6:  // 全開(ゆっくり版)
+      digitalWrite(LED1, HIGH);
+      digitalWrite(LED2, HIGH);
+      moveEyelidSync(0.0, 0.0, TIME_SLOW);
       break;
   }
 
