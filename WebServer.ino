@@ -272,13 +272,13 @@ void printWEB() {
         }
 
         if (currentLine.endsWith("GET /m0")) {
-          eyelidCommand(0);
+          eyelidCommand(0, 300);
         }
         if (currentLine.endsWith("GET /m1")) {
-          eyelidCommand(1);
+          eyelidCommand(1, 300);
         }
         if (currentLine.endsWith("GET /m5")) {
-          eyelidCommand(5);
+          eyelidCommand(5, 300);
         }
         if (currentLine.endsWith("GET /e1")) {
           eyeCommand(1);

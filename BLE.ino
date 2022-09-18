@@ -120,10 +120,17 @@ void loop_ble() {
         }
 
         if (eyelidChar.written()) {
-          int value = eyelidChar.value();
+          const int value = eyelidChar.value();
+          const int slowEyelid = int(value >> 7);  // 上位8bit目が1のとき、低速モード
+          const int commandId = int(value & 0b01111111);
           Serial.print("eyelid command ");
-          Serial.println(value);
-          eyelidCommand(value);
+          Serial.println(commandId);
+          Serial.print("slow mode ");
+          Serial.println(slowEyelid);
+          const int time_ms = slowEyelid ? 2000 : 300;
+          if (slowEyelid) {
+            eyelidCommand(commandId, time_ms);
+          }
           motorOnMillis = millis();
         }
       }
