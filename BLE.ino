@@ -128,9 +128,7 @@ void loop_ble() {
           Serial.print("slow mode ");
           Serial.println(slowEyelid);
           const int time_ms = slowEyelid ? 2000 : 300;
-          if (slowEyelid) {
-            eyelidCommand(commandId, time_ms);
-          }
+          eyelidCommand(commandId, time_ms);
           motorOnMillis = millis();
         }
       }
