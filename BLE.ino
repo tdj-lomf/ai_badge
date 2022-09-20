@@ -1,5 +1,7 @@
 #include <ArduinoBLE.h>
 
+#define ID_3
+
 BLEService newService("180A"); // creating the service
 
 BLEUnsignedCharCharacteristic randomReading("2A58", BLERead | BLENotify); // creating the Analog Value characteristic
@@ -104,6 +106,16 @@ void loop_ble() {
               xValue -= 1;              
             }
           }
+#ifdef ID_3
+          if (xValue <= 2 && yValue >= 12) {  // 特異点回避のため左上の端3マスを除く
+            xValue = 2;
+            yValue = 12;
+          }
+          else if (xValue >= 12 && yValue >= 12) {  // リミット回避のため右上の端3マスを除く
+            xValue = 12;
+            yValue = 12;
+          }
+#endif
           const int xRate = (xValue - 7) * 14;  // [0, 14] -> [-96%, 96%]
           const int yRate = (yValue - 7) * 14;  // [0, 14] -> [-96%, 96%]
           Serial.print("eyeX ");
