@@ -5,7 +5,7 @@
 Servo servo[4];
 EyeLink eyeLink;
 
-#define ID_3
+#define ID_2
 // define min and max values
 // 1
 #ifdef ID_1

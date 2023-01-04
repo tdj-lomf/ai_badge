@@ -1,6 +1,6 @@
 #include <ArduinoBLE.h>
 
-#define ID_3
+// #define ID_3
 
 BLEService newService("180A"); // creating the service
 
@@ -9,6 +9,7 @@ BLEByteCharacteristic switchChar("2A57", BLERead | BLEWrite); // creating the LE
 BLEByteCharacteristic eyeChar("2c36f468-2e63-40d7-8433-9942d2cbd241", BLERead | BLEWrite);
 BLEByteCharacteristic eyeSlowChar("ca6b7de6-91f7-4641-8666-f8507d2ec582", BLERead | BLEWrite);
 BLEByteCharacteristic eyelidChar("af13d297-a502-419a-be4e-a3cd3552bcac", BLERead | BLEWrite);
+BLEByteCharacteristic autoModeChar("5e8f4352-0ac8-49b2-bc8d-694a09a1681a", BLERead | BLEWrite);
 long previousMillis = 0;
 
 void setup_ble() {
@@ -25,6 +26,7 @@ void setup_ble() {
   newService.addCharacteristic(eyeChar);
   newService.addCharacteristic(eyeSlowChar);  // slow mode
   newService.addCharacteristic(eyelidChar);
+  newService.addCharacteristic(autoModeChar);
   newService.addCharacteristic(randomReading);
 
   BLE.addService(newService);  // adding the service
@@ -33,6 +35,7 @@ void setup_ble() {
   eyeChar.writeValue(0);
   eyeSlowChar.writeValue(0);
   eyelidChar.writeValue(0);
+  autoModeChar.writeValue(0);
   randomReading.writeValue(0);
 
   BLE.advertise(); //start advertising the service
@@ -60,7 +63,8 @@ void loop_ble() {
         setMotorPower(false);
       }
 
-      if (duration >= 8000) {
+      int autoMode = autoModeChar.value();  // 1: On, 0: Off
+      if (autoMode == 1 && duration >= 8000) {
         double ex = random(100) - 50;
         double ey = random(100) - 50;
         if (duration >= 15000) {
